@@ -1,3 +1,5 @@
+import MenuItem from "./entities/menu-item.entity";
+
 export class MenuItemsService {
 
   /* TODO: complete getMenuItems so that it returns a nested menu structure
@@ -75,7 +77,35 @@ export class MenuItemsService {
     ]
   */
 
+    
+
+    /* There are 3 ways to Do it
+    - use sequelize-hierarchy plugin
+    - fetchAll and create the hierarchy in memory
+    - if we know the levels, then we can add the nested includes like below
+
+    */
   async getMenuItems() {
-    throw new Error('TODO in task 3');
+    return MenuItem.findAll({
+      include: [
+        {
+          model: MenuItem,
+          required: true,
+          include: [
+            {
+              model: MenuItem,
+              required: true,
+              include: [
+                {
+                  model: MenuItem,
+                  required: false,
+                 
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    });
   }
 }
